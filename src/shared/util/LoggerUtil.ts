@@ -6,7 +6,7 @@ export class LoggerUtil extends ConsoleLogger {
     super();
   }
 
-  error(message: string, trace?: string) {
+  error(message: any, trace?: string) {
     super.error(message, trace);
     console.error(message, trace);
   }
