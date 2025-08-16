@@ -45,4 +45,13 @@ export class ConfigService {
       secretKey: this.get('ENCRYPTION_KEY'),
     };
   }
+
+  get razorpayConfig() {
+    return {
+      keyId: this.get('RAZORPAY_KEY_ID'),
+      keySecret: this.get('RAZORPAY_KEY_SECRET'),
+      baseURL: this.get('RAZORPAY_BASE_URL'),
+      sourceAccountNumber: this.get('RAZORPAY_SOURCE_ACCOUNT_NUMBER'),
+    };
+  }
 }

@@ -33,10 +33,6 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false,
           },
-          failureReason: {
-            type: Sequelize.TEXT,
-            allowNull: true,
-          },
           createdAt: {
             allowNull: false,
             type: Sequelize.DATE,

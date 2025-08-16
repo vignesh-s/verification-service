@@ -23,9 +23,6 @@ export class BankVerificationResponseDto {
   status: BankVerificationStatus;
 
   @ApiProperty()
-  failureReason: string;
-
-  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
@@ -38,7 +35,6 @@ export class BankVerificationResponseDto {
     this.ifscCode = verification.ifscCode;
     this.provider = verification.provider;
     this.status = verification.status;
-    this.failureReason = verification.failureReason;
     this.createdAt = verification.createdAt;
     this.updatedAt = verification.updatedAt;
   }

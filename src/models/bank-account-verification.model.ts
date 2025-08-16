@@ -33,7 +33,4 @@ export class BankAccountVerification extends BaseModel {
     type: DataType.ENUM(...Object.values(BankVerificationStatus)),
   })
   declare status: BankVerificationStatus;
-
-  @Column({ type: DataType.TEXT, allowNull: true })
-  declare failureReason: string;
 }

@@ -5,4 +5,9 @@ export class LoggerUtil extends ConsoleLogger {
   constructor() {
     super();
   }
+
+  error(message: string, trace?: string) {
+    super.error(message, trace);
+    console.error(message, trace);
+  }
 }
