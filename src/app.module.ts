@@ -23,7 +23,7 @@ import { BankVerificationsModule } from './modules/bank-verification/bank-verifi
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_HOST,
-        port: Number(process.env.REDIS_PORT),
+        port: parseInt(process.env.REDIS_PORT || '6379', 10),
         password: process.env.REDIS_PASSWORD,
       },
     }),

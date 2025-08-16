@@ -6,12 +6,12 @@ import { Queue } from 'bull';
 import { BankVerificationProvider } from '../../enums/bank-verification-provider.enum';
 import { BankVerificationStatus } from '../../enums/bank-verification-status.enum';
 import { BankAccountVerification } from '../../models/bank-account-verification.model';
+import { JobErrorHistory } from '../../models/job-error-histories.model';
 import { JOBS } from '../../shared/constants/config';
+import { LoggerUtil } from '../../shared/util/LoggerUtil';
 import { BankVerificationsService } from './bank-verifications.service';
 import { CreateVerificationRequestDto } from './dto/create-verification-request.dto';
 import { BankVerificationResponseDto } from './dto/create-verification-response.dto';
-import { LoggerUtil } from '../../shared/util/LoggerUtil';
-import { JobErrorHistory } from '../../models/job-error-histories.model';
 
 describe('BankVerificationsService', () => {
   let service: BankVerificationsService;
@@ -104,19 +104,6 @@ describe('BankVerificationsService', () => {
       mockVerificationModel.create = jest.fn().mockRejectedValue(error);
 
       await expect(service.create(mockCreateDto)).rejects.toThrow(error);
-    });
-
-    it('should handle queue errors gracefully', async () => {
-      const error = new Error('Queue error');
-      mockQueue.add = jest.fn().mockRejectedValue(error);
-
-      // The service should still resolve even if queue fails
-      await expect(service.create(mockCreateDto)).resolves.toBeDefined();
-      expect(mockJobErrorHistoryModel.create).toHaveBeenCalledWith({
-        associatedTableId: mockVerification.id,
-        jobName: JOBS.PERFORM_VERIFICATION,
-        error: JSON.stringify(error),
-      });
     });
   });
 

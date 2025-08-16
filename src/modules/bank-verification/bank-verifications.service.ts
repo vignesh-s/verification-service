@@ -30,7 +30,7 @@ export class BankVerificationsService {
       ...createVerificationDto,
     });
     try {
-      await this.verificationQueue.add(JOBS.PERFORM_VERIFICATION, {
+      this.verificationQueue.add(JOBS.PERFORM_VERIFICATION, {
         id: verification.id,
       });
     } catch (error) {
