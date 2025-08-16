@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
-import { ConfigService } from 'src/shared/services/config.service';
-import { SharedModule } from 'src/shared/shared.module';
+import { ConfigService } from '../shared/services/config.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Module({
   imports: [

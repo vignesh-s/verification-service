@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
+import { BankVerificationStatus } from '../../../enums/bank-verification-status.enum';
 import { BankAccountVerification } from '../../../models/bank-account-verification.model';
 import { ConfigService } from '../../../shared/services/config.service';
 import { IVerificationProvider } from './provider.interface';
@@ -31,7 +32,7 @@ export class RazorpayProvider implements IVerificationProvider {
 
   async verify(
     verification: BankAccountVerification,
-  ): Promise<{ status: string; reason?: string }> {
+  ): Promise<{ status: string }> {
     const contactId = await this.createContact(verification.accountHolderName);
     const fundAccountId = await this.createFundAccount(verification, contactId);
     const validationId = await this.validateAccount(fundAccountId);
@@ -88,7 +89,19 @@ export class RazorpayProvider implements IVerificationProvider {
       `/fund_accounts/validations/${validationId}`,
     );
     return {
-      status: response.data.status,
+      status: this.getStatus(response.data.status),
     };
+  }
+
+  getStatus(status: string): BankVerificationStatus {
+    switch (status) {
+      case 'created':
+        return BankVerificationStatus.PENDING;
+      case 'completed':
+        return BankVerificationStatus.VERIFIED;
+      case 'failed':
+      default:
+        return BankVerificationStatus.FAILED;
+    }
   }
 }

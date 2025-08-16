@@ -20,10 +20,9 @@ export class VerificationProcessor {
 
   @Process(JOBS.PERFORM_VERIFICATION)
   async performVerification(job: Job<{ id: string }>) {
-    const verification = await this.verificationModel.findById(job.data.id);
-    const provider = this.providerFactory.getProvider(verification.provider);
-
     try {
+      const verification = await this.verificationModel.findById(job.data.id);
+      const provider = this.providerFactory.getProvider(verification.provider);
       const result = await provider.verify(verification);
       await this.verificationModel.update(
         {
@@ -31,15 +30,15 @@ export class VerificationProcessor {
         },
         { where: { id: job.data.id } },
       );
-    } catch (e) {
+    } catch (error) {
       this.logger.error(
         'Error verifying bank account',
-        e.response?.data || e.message,
+        error.response?.data || error.message,
       );
       await this.jobErrorHistoryModel.create({
         associatedTableId: job.data.id,
         jobName: JOBS.PERFORM_VERIFICATION,
-        error: JSON.stringify(e.response?.data) || e.message,
+        error: JSON.stringify(error.response?.data) || error.message,
       });
     }
   }
